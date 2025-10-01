@@ -1,0 +1,85 @@
+paths:
+  /calc/add:
+    get:
+      summary: Adds two numbers
+      tags: [Calculations]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: a
+          required: true
+          schema:
+            type: number
+          description: The first number.
+        - in: query
+          name: b
+          required: true
+          schema:
+            type: number
+          description: The second number.
+      responses:
+        "200":
+          description: The sum of the two numbers.
+        "400":
+          description: Invalid input.
+  /calc/multiply:
+    get:
+      summary: Multiplies two numbers
+      tags: [Calculations]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: a
+          required: true
+          schema:
+            type: number
+          description: The first number.
+        - in: query
+          name: b
+          required: true
+          schema:
+            type: number
+          description: The second number.
+      responses:
+        "200":
+          description: The product of the two numbers.
+        "400":
+          description: Invalid input.
+  /calc/isOdd:
+    get:
+      summary: Checks if a number is odd
+      tags: [Calculations]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: n
+          required: true
+          schema:
+            type: number
+          description: The number to check.
+      responses:
+        "200":
+          description: Returns true if the number is odd, otherwise false.
+        "400":
+          description: Invalid input.
+  /calc/isEven:
+    get:
+      summary: Checks if a number is even
+      tags: [Calculations]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: n
+          required: true
+          schema:
+            type: number
+          description: The number to check.
+      responses:
+        "200":
+          description: Returns true if the number is even, otherwise false.
+        "400":
+          description: Invalid input.

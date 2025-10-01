@@ -1,0 +1,25 @@
+paths:
+  /admin/logs:
+    get:
+      summary: Get all API request logs (Admin only)
+      tags: [Admin]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Page number
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+          description: Number of logs per page
+      responses:
+        "200":
+          description: A paginated list of logs
+        "403":
+          description: Access denied
