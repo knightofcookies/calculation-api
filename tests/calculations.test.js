@@ -57,7 +57,6 @@ describe("Admin Endpoints", () => {
   });
 
   it("should be accessible to an admin user", async () => {
-    // First, make a calculation request to generate a log entry
     await request(app)
       .get("/calc/multiply?a=2&b=3")
       .set("Authorization", `Bearer ${userToken}`);
@@ -70,5 +69,34 @@ describe("Admin Endpoints", () => {
     expect(res.body).toHaveProperty("logs");
     expect(res.body.logs.length).toBeGreaterThan(0);
     expect(res.body.logs[0].path).toContain("/calc/multiply");
+  });
+
+  it("should return paginated logs correctly", async () => {
+    for (let i = 0; i < 12; i++) {
+      await request(app)
+        .get(`/calc/add?a=${i}&b=${i}`)
+        .set("Authorization", `Bearer ${userToken}`);
+    }
+
+    const page1Res = await request(app)
+      .get("/admin/logs?page=1&limit=5")
+      .set("Authorization", `Bearer ${adminToken}`);
+
+    expect(page1Res.statusCode).toEqual(200);
+    expect(page1Res.body.logs.length).toBe(5);
+    expect(page1Res.body.currentPage).toBe(1);
+    expect(page1Res.body.totalPages).toBeGreaterThanOrEqual(3);
+
+    const page2Res = await request(app)
+      .get("/admin/logs?page=2&limit=5")
+      .set("Authorization", `Bearer ${adminToken}`);
+
+    expect(page2Res.statusCode).toEqual(200);
+    expect(page2Res.body.logs.length).toBe(5);
+    expect(page2Res.body.currentPage).toBe(2);
+
+    const firstLogIdOnPage1 = page1Res.body.logs[0].id;
+    const firstLogIdOnPage2 = page2Res.body.logs[0].id;
+    expect(firstLogIdOnPage1).not.toEqual(firstLogIdOnPage2);
   });
 });
